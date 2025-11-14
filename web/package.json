@@ -1,0 +1,11 @@
+{
+  "name": "starcounter-pro",
+  "version": "1.0.0",
+  "description": "GitHub Analytics for Developers - Coming Soon Landing Page",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Static site - no build needed'"
+  },
+  "author": "Nick Scherbakov",
+  "license": "MIT"
+}
