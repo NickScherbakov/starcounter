@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarCounter Pro - Coming Soon | GitHub Analytics for Developers</title>
+    <meta name="description" content="Turn your GitHub activity into career capital. Predictive analytics, beautiful reports, and team dashboards. Launching soon!">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(147, 51, 234, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(147, 51, 234, 0.8); }
+        }
+        .glow-button {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Logo -->
+            <div class="mb-8 float-animation">
+                <i class="fas fa-star text-yellow-400 text-6xl mb-4 inline-block"></i>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="text-6xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent">
+                StarCounter Pro
+            </h1>
+            
+            <p class="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
+                Turn Your GitHub Activity Into Career Capital
+            </p>
+
+            <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
+                From invisible to rockstar developer. Track your progress, predict your growth, 
+                showcase your achievements. The analytics platform for ambitious developers.
+            </p>
+
+            <!-- Coming Soon Badge -->
+            <div class="inline-block bg-purple-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-8 glow-button">
+                🚀 Launching in 30 Days
+            </div>
+
+            <!-- Email Signup Form -->
+            <div class="max-w-md mx-auto mb-12">
+                <div id="signupForm" class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <h3 class="text-xl font-semibold mb-4">Get Early Access</h3>
+                    <p class="text-gray-300 mb-6 text-sm">
+                        Join the waiting list and get <span class="text-yellow-400 font-bold">3 months free</span> when we launch!
+                    </p>
+                    
+                    <form id="emailForm" class="space-y-4">
+                        <input 
+                            type="email" 
+                            id="emailInput"
+                            placeholder="Enter your email..." 
+                            required
+                            class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        >
+                        <button 
+                            type="submit"
+                            class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105"
+                        >
+                            Notify Me at Launch 🎉
+                        </button>
+                    </form>
+                    
+                    <p class="text-gray-400 text-xs mt-4">
+                        <i class="fas fa-lock mr-1"></i>
+                        No spam. Unsubscribe anytime. We respect your privacy.
+                    </p>
+                </div>
+
+                <!-- Success Message (Hidden by default) -->
+                <div id="successMessage" class="hidden bg-green-500/20 backdrop-blur-md rounded-2xl p-8 border border-green-500/50">
+                    <i class="fas fa-check-circle text-green-400 text-4xl mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">You're on the list! 🎉</h3>
+                    <p class="text-gray-300 text-sm mb-4">
+                        We'll email you when StarCounter Pro launches with your exclusive early access link.
+                    </p>
+                    <div class="bg-white/10 rounded-lg p-4">
+                        <p class="text-sm text-gray-300 mb-2">
+                            <strong>Position in queue:</strong> <span id="queuePosition" class="text-yellow-400 font-bold">#247</span>
+                        </p>
+                        <p class="text-xs text-gray-400">
+                            Share with friends to move up! Each referral = +5 positions
+                        </p>
+                    </div>
+                    <div class="mt-4 flex justify-center space-x-3">
+                        <button onclick="shareOnTwitter()" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg text-sm transition">
+                            <i class="fab fa-twitter mr-1"></i> Share
+                        </button>
+                        <button onclick="copyLink()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition">
+                            <i class="fas fa-link mr-1"></i> Copy Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Proof Counter -->
+            <div class="mb-12">
+                <p class="text-gray-400 text-sm mb-2">Already on the waiting list:</p>
+                <div class="flex justify-center items-center space-x-2">
+                    <div class="flex -space-x-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 border-2 border-gray-900"></div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 border-2 border-gray-900"></div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-400 border-2 border-gray-900"></div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-400 border-2 border-gray-900"></div>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-400 to-pink-400 border-2 border-gray-900"></div>
+                    </div>
+                    <span id="waitlistCount" class="text-2xl font-bold text-purple-400">247</span>
+                    <span class="text-gray-400">developers</span>
+                </div>
+            </div>
+
+            <!-- Feature Highlights -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition">
+                    <i class="fas fa-chart-line text-purple-400 text-3xl mb-3"></i>
+                    <h4 class="font-semibold mb-2">Predictive Analytics</h4>
+                    <p class="text-gray-400 text-sm">AI-powered growth predictions and reputation trends</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition">
+                    <i class="fas fa-file-pdf text-blue-400 text-3xl mb-3"></i>
+                    <h4 class="font-semibold mb-2">Beautiful Reports</h4>
+                    <p class="text-gray-400 text-sm">Export stunning PDFs for resumes and portfolios</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-green-500/50 transition">
+                    <i class="fas fa-users text-green-400 text-3xl mb-3"></i>
+                    <h4 class="font-semibold mb-2">Team Dashboards</h4>
+                    <p class="text-gray-400 text-sm">Track and compare your entire development team</p>
+                </div>
+            </div>
+
+            <!-- Pricing Preview -->
+            <div class="bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-md rounded-2xl p-8 border border-white/10 mb-12">
+                <h3 class="text-2xl font-bold mb-4">Launch Pricing</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                    <div>
+                        <div class="text-sm text-gray-400 mb-1">Free</div>
+                        <div class="text-3xl font-bold mb-2">$0</div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>✓ Basic analytics</li>
+                            <li>✓ 30-day history</li>
+                            <li>✓ Public profiles</li>
+                        </ul>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute -top-3 right-0 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-full">
+                            POPULAR
+                        </div>
+                        <div class="text-sm text-gray-400 mb-1">Pro</div>
+                        <div class="text-3xl font-bold mb-2">
+                            $4.99<span class="text-lg text-gray-400">/mo</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>✓ All Free features</li>
+                            <li>✓ Predictive analytics</li>
+                            <li>✓ PDF exports</li>
+                            <li>✓ API access</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="text-sm text-gray-400 mb-1">Team</div>
+                        <div class="text-3xl font-bold mb-2">
+                            $19.99<span class="text-lg text-gray-400">/mo</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>✓ All Pro features</li>
+                            <li>✓ Up to 10 members</li>
+                            <li>✓ Team analytics</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mission Statement -->
+            <div class="bg-gradient-to-r from-purple-600/20 to-pink-600/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-500/30">
+                <h3 class="text-xl font-bold mb-3">
+                    <i class="fas fa-heart text-pink-400 mr-2"></i>
+                    Our Mission
+                </h3>
+                <p class="text-gray-300">
+                    10% of all revenue goes to sponsoring talented developers from underserved countries. 
+                    <strong>Code with purpose, sponsor with heart.</strong>
+                </p>
+            </div>
+
+            <!-- Footer Links -->
+            <div class="mt-12 flex justify-center space-x-6 text-gray-400">
+                <a href="https://github.com/NickScherbakov/starcounter" target="_blank" class="hover:text-white transition">
+                    <i class="fab fa-github text-2xl"></i>
+                </a>
+                <a href="#" class="hover:text-white transition">
+                    <i class="fab fa-twitter text-2xl"></i>
+                </a>
+                <a href="#" class="hover:text-white transition">
+                    <i class="fab fa-product-hunt text-2xl"></i>
+                </a>
+            </div>
+
+            <p class="mt-6 text-gray-500 text-sm">
+                Made with 💜 by developers, for developers
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Email form handling
+        const emailForm = document.getElementById('emailForm');
+        const signupForm = document.getElementById('signupForm');
+        const successMessage = document.getElementById('successMessage');
+        const waitlistCount = document.getElementById('waitlistCount');
+
+        // Load count from localStorage
+        let count = parseInt(localStorage.getItem('waitlistCount')) || 247;
+        waitlistCount.textContent = count;
+
+        emailForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('emailInput').value;
+            
+            // Save email to localStorage (in production, send to backend)
+            const emails = JSON.parse(localStorage.getItem('waitlistEmails') || '[]');
+            
+            if (!emails.includes(email)) {
+                emails.push(email);
+                localStorage.setItem('waitlistEmails', JSON.stringify(emails));
+                
+                // Increment counter
+                count++;
+                localStorage.setItem('waitlistCount', count);
+                waitlistCount.textContent = count;
+                
+                // Show success message
+                signupForm.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+                
+                // Set queue position
+                document.getElementById('queuePosition').textContent = '#' + count;
+                
+                // In production, send to backend API
+                console.log('New signup:', email);
+                
+                // Optional: Send to Google Forms or make.com webhook
+                // fetch('YOUR_WEBHOOK_URL', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ email, timestamp: new Date().toISOString() })
+                // });
+            } else {
+                alert('This email is already on the waiting list!');
+            }
+        });
+
+        // Social sharing functions
+        function shareOnTwitter() {
+            const text = encodeURIComponent('Just joined the waiting list for StarCounter Pro - GitHub analytics for developers! 🚀');
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+
+        function copyLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        // Simulate live counter updates (remove in production)
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                count++;
+                localStorage.setItem('waitlistCount', count);
+                waitlistCount.textContent = count;
+            }
+        }, 30000); // Every 30 seconds
+    </script>
+</body>
+</html>
