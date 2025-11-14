@@ -58,33 +58,30 @@
                 🚀 Launching in 30 Days
             </div>
 
-            <!-- Email Signup Form -->
+            <!-- Email Signup Form (Simplified - Formspree) -->
             <div class="max-w-md mx-auto mb-12">
-                <div id="signupForm" class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-                    <h3 class="text-xl font-semibold mb-4">Get Early Access</h3>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
+                    <h3 class="text-xl font-semibold mb-4">Получить ранний доступ</h3>
                     <p class="text-gray-300 mb-6 text-sm">
-                        Join the waiting list and get <span class="text-yellow-400 font-bold">3 months free</span> when we launch!
+                        Оставьте email — пришлём приглашение на запуск + <span class="text-yellow-400 font-bold">3 месяца Pro бесплатно</span>.
                     </p>
-                    
-                    <form id="emailForm" class="space-y-4">
-                        <input 
-                            type="email" 
-                            id="emailInput"
-                            placeholder="Enter your email..." 
-                            required
-                            class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                        >
-                        <button 
-                            type="submit"
-                            class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition transform hover:scale-105"
-                        >
-                            Notify Me at Launch 🎉
+                    <!-- Замените FORM_ID на свой после регистрации на formspree.io -->
+                    <form action="https://formspree.io/f/FORM_ID" method="POST" class="space-y-4" id="waitlistForm">
+                        <input type="email" name="email" placeholder="you@example.com" required
+                               class="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" />
+                        <!-- Honeypot -->
+                        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+                        <button type="submit"
+                                class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold py-3 rounded-lg hover:from-purple-700 hover:to-blue-700 transition">
+                            Подписаться 🔔
                         </button>
+                        <input type="hidden" name="_subject" value="New StarCounter Pro Waitlist Signup">
+                        <input type="hidden" name="source" value="coming-soon-form">
                     </form>
-                    
+                    <div id="formResult" class="hidden mt-4 text-sm"></div>
                     <p class="text-gray-400 text-xs mt-4">
                         <i class="fas fa-lock mr-1"></i>
-                        No spam. Unsubscribe anytime. We respect your privacy.
+                        Без спама. Отписка в один клик.
                     </p>
                 </div>
 
@@ -224,86 +221,45 @@
     </div>
 
     <script>
-        // Email form handling
-        const emailForm = document.getElementById('emailForm');
-        const signupForm = document.getElementById('signupForm');
-        const successMessage = document.getElementById('successMessage');
+        // Local visual counter (optional)
         const waitlistCount = document.getElementById('waitlistCount');
-
-        // Load count from localStorage
         let count = parseInt(localStorage.getItem('waitlistCount')) || 247;
         waitlistCount.textContent = count;
 
-        emailForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('emailInput').value;
-            
-            // Save email to localStorage (in production, send to backend)
-            const emails = JSON.parse(localStorage.getItem('waitlistEmails') || '[]');
-            
-            if (!emails.includes(email)) {
-                emails.push(email);
-                localStorage.setItem('waitlistEmails', JSON.stringify(emails));
-                
-                // Increment counter
+        const form = document.getElementById('waitlistForm');
+        const successMessage = document.getElementById('successMessage');
+        const queuePosition = document.getElementById('queuePosition');
+        const formResult = document.getElementById('formResult');
+
+        form.addEventListener('submit', (e) => {
+            const honeypot = form.querySelector('input[name="website"]').value;
+            if (honeypot) {
+                e.preventDefault();
+                formResult.textContent = 'Bot detected.';
+                formResult.className = 'mt-4 text-red-400 text-sm';
+                formResult.classList.remove('hidden');
+                return;
+            }
+            // Let Formspree handle submit; show instant success UI
+            form.addEventListener('formspree:submit', () => {
                 count++;
                 localStorage.setItem('waitlistCount', count);
                 waitlistCount.textContent = count;
-                
-                // Show success message
-                signupForm.classList.add('hidden');
+                queuePosition.textContent = '#' + count;
+                form.classList.add('hidden');
                 successMessage.classList.remove('hidden');
-                
-                // Set queue position
-                document.getElementById('queuePosition').textContent = '#' + count;
-                
-                // Send to Google Sheets
-                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7VCm1bfhBODWwO8FWxLgw8yvYUPegOVUSTI7uCsu4hhr5e5w_6K-zHGZ9GHOnuIk/exec';
-                
-                if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
-                    fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            email: email,
-                            timestamp: new Date().toISOString(),
-                            source: 'coming-soon-page',
-                            userAgent: navigator.userAgent,
-                            referrer: document.referrer || 'Direct'
-                        })
-                    }).catch(err => console.log('Saved locally, sync will happen later'));
-                }
-                
-                console.log('New signup:', email);
-            } else {
-                alert('This email is already on the waiting list!');
-            }
+            }, { once: true });
         });
 
-        // Social sharing functions
+        // Simple share helpers
         function shareOnTwitter() {
-            const text = encodeURIComponent('Just joined the waiting list for StarCounter Pro - GitHub analytics for developers! 🚀');
+            const text = encodeURIComponent('Я в листе ожидания StarCounter Pro – аналитика GitHub для разработчиков! 🚀');
             const url = encodeURIComponent(window.location.href);
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
         }
-
-        function copyLink() {
-            const url = window.location.href;
-            navigator.clipboard.writeText(url).then(() => {
-                alert('Link copied to clipboard!');
-            });
+        function copyLink(){
+            navigator.clipboard.writeText(window.location.href).then(()=>alert('Ссылка скопирована'));
         }
-
-        // Simulate live counter updates (remove in production)
-        setInterval(() => {
-            if (Math.random() > 0.7) {
-                count++;
-                localStorage.setItem('waitlistCount', count);
-                waitlistCount.textContent = count;
-            }
-        }, 30000); // Every 30 seconds
     </script>
 </body>
 </html>
