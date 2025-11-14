@@ -258,15 +258,25 @@
                 // Set queue position
                 document.getElementById('queuePosition').textContent = '#' + count;
                 
-                // In production, send to backend API
-                console.log('New signup:', email);
+                // Send to Google Sheets
+                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz7VCm1bfhBODWwO8FWxLgw8yvYUPegOVUSTI7uCsu4hhr5e5w_6K-zHGZ9GHOnuIk/exec';
                 
-                // Optional: Send to Google Forms or make.com webhook
-                // fetch('YOUR_WEBHOOK_URL', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ email, timestamp: new Date().toISOString() })
-                // });
+                if (GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            email: email,
+                            timestamp: new Date().toISOString(),
+                            source: 'coming-soon-page',
+                            userAgent: navigator.userAgent,
+                            referrer: document.referrer || 'Direct'
+                        })
+                    }).catch(err => console.log('Saved locally, sync will happen later'));
+                }
+                
+                console.log('New signup:', email);
             } else {
                 alert('This email is already on the waiting list!');
             }
